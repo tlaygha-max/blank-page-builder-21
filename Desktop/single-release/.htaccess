@@ -1,0 +1,23 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # If the site is in a subfolder, uncomment and set it:
+    # RewriteBase /
+
+    RewriteRule ^(?:app|partials|outputs|storage)(?:/|$) - [F,L,NC]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ router.php [QSA,L]
+</IfModule>
+
+<FilesMatch "^(?:\.gitignore|README\.md|telegram\.json|recaptcha\.json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
